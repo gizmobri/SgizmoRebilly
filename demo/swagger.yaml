@@ -1,0 +1,2288 @@
+openapi: 3.0.0
+info:
+  title: SurveyGizmo API
+  description: API spec for new SurveyGizmo partner API
+  version: "1"
+servers:
+  - description: Production server  
+    url: 'https://restapi.surveygizmo.com/v5/'
+##################
+# Paths
+##################
+paths:
+  /surveys:
+    get:
+      tags:
+        - Surveys
+      description: 'Get a list of surveys'
+      parameters:
+        - $ref: '#/components/parameters/page_param'
+        - $ref: '#/components/parameters/results_per_page_param'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/components/definitions/surveys_list_output'
+        400:
+          $ref: '#/components/responses/400'
+        401:
+          $ref: '#/components/responses/401'
+        402:
+          $ref: '#/components/responses/402'
+        404:
+          $ref: '#/components/responses/404'
+    post:
+      tags:
+        - Surveys
+      description: Create a new survey
+      parameters:
+        - in: body
+          name: body
+          description: ''
+          required: true
+          schema:
+            $ref: '#/components/definitions/surveys_post_input'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/components/definitions/surveys_output'
+  /surveys/{survey_id}:
+    parameters:
+      - $ref: '#/components/parameters/survey_id'
+    get:
+      tags:
+        - Surveys
+      description: 'Get an existing survey'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/components/definitions/surveys_output'
+    put:
+      tags:
+        - Surveys
+      description: Update an existing survey
+      parameters:
+        - in: body
+          name: body
+          description: ''
+          required: true
+          schema:
+            $ref: '#/components/definitions/surveys_put_input'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/components/definitions/surveys_output'
+    delete:
+      tags:
+        - Surveys
+      description: 'Delete an existing survey'
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: string
+            example: OK
+  /surveys/{survey_id}/complete:
+    parameters: 
+      - $ref: '#/components/parameters/survey_id'
+    get:
+      tags:
+        - Surveys
+      description: 'Get entire survey (includes pages & questions)'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/components/definitions/surveys_complete_output'
+  /surveys/{survey_id}/pages:
+    parameters: 
+      - $ref: '#/components/parameters/survey_id'
+    get:
+      tags:
+        - Survey Pages
+      description: 'Get a list of pages for a specified survey'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/components/definitions/surveypages_list_output'
+    post:
+      tags:
+        - Survey Pages
+      description: 'Create a page in a specified survey'
+      parameters:
+        - in: body
+          name: body
+          description: ''
+          required: true
+          schema:
+            $ref: '#/components/definitions/surveypages_post_input'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/components/definitions/surveypages_output'
+  /surveys/{survey_id}/pages/{page_id}:
+    parameters:
+        - $ref: '#/components/parameters/survey_id'
+        - $ref: '#/components/parameters/page_id'
+    get:
+      tags:
+        - Survey Pages
+      description: 'Get an existing page in an existing survey'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/components/definitions/surveypages_output'
+    put:
+      tags:
+        - Survey Pages
+      description: 'Update a existing page in an existing survey'
+      parameters:
+        - in: body
+          name: body
+          description: ''
+          required: true
+          schema:
+            $ref: '#/components/definitions/surveypages_put_input'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/components/definitions/surveypages_output'
+    delete:
+      tags:
+        - Survey Pages
+      description: 'Delete an existing page'
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: string
+            example: OK
+  /survey/{survey_id}/pages/{page_id}/questions:
+    parameters:
+      - $ref: '#/components/parameters/survey_id'
+      - $ref: '#/components/parameters/page_id'
+    get:
+      tags:
+        - Survey Questions
+      description: 'Get a list of questions for an existing page'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/components/definitions/surveypages_output'
+  /surveys/{survey_id}/responses:
+    parameters:
+      - $ref: '#/components/parameters/survey_id'
+    get:
+      tags: 
+        - Survey Responses
+      operationId: 'Get a list of responses for an existing survey. '
+      description: 'Get a list of responses for an existing survey. Get requests support only one filter condition. Use the responses_search endpoint to filter responses by multiple conditions'
+      parameters:
+        - $ref: '#/components/parameters/page_param'
+        - $ref: '#/components/parameters/results_per_page_param'
+        - $ref: '#/components/parameters/field'
+        - $ref: '#/components/parameters/operator'
+        - $ref: '#/components/parameters/value'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/components/definitions/survey_responses_list_output'
+    post:
+      tags:
+        - Survey Responses
+      description: 'Create a new response'
+      parameters:
+        - in: body
+          name: body
+          description: ''
+          required: true
+          schema:
+            $ref: '#/components/definitions/survey_responses_post_input'
+  /surveys/{survey_id}/responses/{response_id}:
+    parameters: 
+      - $ref: '#/components/parameters/survey_id'
+      - $ref: '#/components/parameters/response_id'
+    get:
+      tags: 
+        - Survey Responses
+      description: 'Get an existing response'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/components/definitions/survey_responses_output'
+    put:
+      tags:
+        - Survey Responses
+      description: 'Update an existing response'
+      parameters:
+        - in: body
+          name: body
+          description: ''
+          required: false
+          schema:
+            $ref: '#/components/definitions/survey_responses_put_input'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/components/definitions/survey_responses_output'
+    delete:
+      tags:
+        - Survey Responses
+      description: 'Delete an existing response'
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: string
+            example: OK
+  /surveys/{survey_id}/responses_search:
+    parameters:
+      - $ref: '#/components/parameters/survey_id'
+    post:
+      tags:
+        - Survey Responses
+      description: 'Search responses using multiple filter conditions'
+      parameters:
+        - in: body
+          name: body
+          description: ''
+          required: true
+          schema:
+            $ref: '#/components/definitions/survey_response_filters'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/components/definitions/survey_responses_output'
+  /surveys/{survey_id}/links:
+    parameters: 
+      - $ref: '#/components/parameters/survey_id'
+    get:
+      tags:
+        - Survey Links
+      description: 'Get app and share links for an existing survey'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/components/definitions/surveylinks'
+  /surveys/{survey_id}/response_stats:
+    parameters: 
+      - $ref: '#/components/parameters/survey_id'
+    get:
+      tags:
+        - Survey Response Aggregates
+      description: 'Get response statistics for an existing survey'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/components/definitions/response_statistics'
+  /surveys/{survey_id}/question_stats:
+    parameters: 
+      - $ref: '#/components/parameters/survey_id'
+      - $ref: '#/components/parameters/question_id'
+    get:
+      tags:
+        - Survey Response Aggregates
+      description: 'Get statistics for a question'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/components/definitions/question_statistics'
+#########################
+# Components: Parameters
+#########################
+components:
+  parameters:
+    page_param:
+      name: page_param
+      in: query
+      description: "Page of results to return"
+      required: false
+      style: form
+      explode: false
+      type: integer
+      format: int32
+      example: 3
+      default: 1
+    results_per_page_param:
+      name: results_per_page_param
+      in: query
+      description: "Number results to display per page in response"
+      required: false
+      style: form
+      explode: false
+      type: integer
+      format: int32
+      example: 25
+      default: 50
+    survey_id:
+      name: survey_id
+      in: path
+      description: "Survey ID"
+      required: true
+      explode: false
+      type: string
+    page_id:
+      name: page_id
+      in: path
+      type: string
+      description: "Page ID"
+      required: true
+      explode: false
+      example: 5
+    response_id:
+      name: response_id
+      in: path
+      description: "Response ID"
+      required: true
+      explode: false
+      type: string
+    question_id:
+      name: question_id
+      in: path
+      description: "Question ID"
+      required: true
+      explode: false
+      type: string
+    field:
+      name: field
+      in: query
+      description: "Field to filter by"
+      required: false
+      style: form
+      explode: false
+      type: string
+      example: "question_2"
+    operator:
+      name: operator
+      in: query
+      description: "Filter operator"
+      required: false
+      style: form
+      explode: false
+      type: string
+      example: "="
+    value:
+      name: value
+      in: query
+      description: "Filter value"
+      required: false
+      style: form
+      explode: false
+      type: string
+      example: "Yes"
+#########################
+# Components: Responses
+#########################
+  responses:
+    400:
+      description: Bad request
+      schema:
+        type: string
+        description: Bad request
+        example: Bad request
+    401:
+      description: Unauthorized - No valid API key provided
+      schema:
+        type: string
+        description: Unauthorized - No valid API key provided
+        example: Unauthorized - No valid API key provided
+    402:
+      description: Request failed - Parameters valid but request failed
+      schema:
+        type: string
+        description: Request failed - Parameters valid but request failed
+        example: Request failed - Parameters valid but request failed
+    403:
+      description: Request failed - Parameters valid but request failed
+      schema:
+        type: string
+        description: Request failed - Parameters valid but request failed
+        example: Request failed - Parameters valid but request failed
+    404:
+      description: Not found
+      schema:
+        type: string
+        description: Not found
+        example: Not found
+    409:
+      description: Too many requests.
+      schema:
+        type: string
+        description: Too many requests.
+        example: Too many requests.
+    429:
+      description: Conflict - The request conflicts with another request (perhaps due to using the same idempotent key).
+      schema:
+        type: string
+        description: Conflict - The request conflicts with another request (perhaps due to using the same idempotent key).
+        example: Conflict - The request conflicts with another request (perhaps due to using the same idempotent key).
+#########################
+# Components: definitions
+#########################
+  definitions:
+    surveys_post_input:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            survey_type:
+              type: string
+              example: "survey"
+              enum:
+                - "survey"
+                - "poll"
+                - "form"
+                - "quiz"
+            survey_title:
+              type: string
+              example: "ABC Company Survey"
+            internal_title:
+              type: string
+              example: "ABC Company Survey Internal Title"
+            multilang_titles:
+              type: object
+              properties:
+                English: 
+                  type: string
+                  example: "ABC Company Survey"
+                Spanish: 
+                  type: string
+                  example: "Encuesta de la Empresa ABC"
+            survey_status:
+              type: string
+              example: "open"
+              enum:
+                - "open"
+                - "closed"
+                - "deleted"
+                - "archived"
+            date_created:
+              type: string
+              format: date-time
+              example: "2017-07-21T17:32:28Z"
+              readOnly: true
+            date_modified:
+              type: string
+              format: date-time
+              example: "2017-07-21T17:32:28Z"
+              readOnly: true
+            survey_team: 
+              type: object
+              properties:
+                team_id: 
+                  type: string
+                  example: "456789"
+                name:
+                  type: string
+                  example: "Team 1"
+                  readOnly: true
+            languages:
+              type: array
+              items:
+                type: string
+                enum: [Abkhazian,Afar,Afrikaans,Akan,Albanian,Amharic,Arabic,Aragonese,Armenian,Assamese,Avaric,Avestan,Aymara,Azerbaijani,Bambara,Bashkir,Basque,Belarusian,Bengali,Bihari,Bislama,Bosnian,Breton,Bulgarian,Burmese,Catalan,Chamorro,Chechen,Chichewa,Chinese (Hong Kong),Chinese (PRC),Chinese (Singapore),Chinese (Taiwan),Chinese (simplified),Church Slavic,Chuvash,Cornish,Corsican,Cree,Croatian,Czech,Danish,Divehi,Dutch,Dzongkha,English,English (Australia),English (Canada),English (South Africa),English (UK),Esperanto,Estonian,Ewe,Faroese,Fijian,Finnish,French,French (Belgium),French (France),French (Luxembourg),French (Monaco),French (Switzerland),French-Canadian,Fulah,Galician,Ganda,Georgian,German,German (Austria),German (Switzerland),Greek,Guarani,Gujarati,Haitian,Hausa,Hebrew,Herero,Hindi,Hiri Motu,Hungarian,Icelandic,Ido,Igbo,Indonesian,Interlingua,Interlingue,Inuktitut,Inupiaq,Irish,Italian,Italian (Switzerland),Japanese,Javanese,Kalaallisut,Kannada,Kanuri,Kashmiri,Kazakh,Khmer,Kikuyu,Kinyarwanda,Kirghiz,Kirundi,Komi,Kongo,Korean,Kurdish,Kwanyama,Lao,Latin,Latvian,Limburgish,Lingala,Lithuanian,Luba-Katanga,Luxembourgish,Macedonian,Malagasy,Malay,Malayalam,Maltese,Manx,Maori,Marathi,Marshallese,Mongolian,Nauru,Navajo,Ndonga,Nepali,North Ndebele,Northern Sami,Norwegian,Norwegian Bokmal,Norwegian Nynorsk,Occitan,Ojibwa,Oriya,,Oromo,Ossetian,Pali,Panjabi,Pashto,Persian,Polish,Portuguese,Portuguese (Brazil),Quechua,Raeto-Romance,Romanian,Russian,Samoan,Sango,Sanskrit,Sardinian,Scottish Gaelic,Serbian,Shona,Sichuan Yi,Sindhi,Sinhala,Slovak,Slovenian,Somali,South Ndebele,Southern Sotho,Spanish,Spanish (Mexico),Spanish (United States),Sundanese,Swahili,Swati,Swedish,Tagalog,Tahitian,Tajik,Tamil,Tatar,Telugu,Thai,Tibetan,Tigrinya,Tonga,Tsonga,Tswana,Turkish,Turkmen,Twi,Uighur,Ukrainian,Urdu,Uzbek,Venda,Vietnamese,Volapuk,Walloon,Welsh,Western Frisian,Wolof,Xhosa,Yiddish,Yoruba,Zhuang,Zulu]
+              example: [ "English","Spanish","French" ]
+            theme:
+              type: string
+              example: "110045"
+            forward_only:
+              type: boolean
+              example: false
+            dup_protection:
+              type: string
+              example: "cookie"
+            survey_theme:
+              type: string
+              example: "11147"
+            overall_quota:
+              type: integer
+              format: int32
+              example: 100
+            auto_close:
+              type: string
+              format: date-time
+              example: '2017-07-21T17:32:28Z'
+            pages:
+              type: array
+              items:
+                type: object
+                properties:
+                  page_id:
+                    type: integer
+                    format: int32
+                    example: 1
+                    readOnly: true
+                  url:
+                    type: string
+                    example: "https://restapisurveygizmo.com/v5/survey/{survey_id}/1"
+                    readOnly: true
+          required:
+            - survey_title
+            - survey_type
+    surveys_put_input:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            survey_type:
+              type: string
+              example: "survey"
+              enum:
+                - "survey"
+                - "poll"
+                - "form"
+                - "quiz"
+            survey_title:
+              type: string
+              example: "ABC Company Survey"
+            internal_title:
+              type: string
+              example: "ABC Company Survey Internal Title"
+            multilang_titles:
+              type: object
+              properties:
+                English: 
+                  type: string
+                  example: "ABC Company Survey"
+                Spanish: 
+                  type: string
+                  example: "Encuesta de la Empresa ABC"
+            survey_status:
+              type: string
+              example: open
+              enum:
+                - "open"
+                - "closed"
+                - "deleted"
+                - "archived"
+            date_created:
+              type: string
+              format: date-time
+              example: "2017-07-21T17:32:28Z"
+              readOnly: true
+            date_modified:
+              type: string
+              format: date-time
+              example: "2017-07-21T17:32:28Z"
+              readOnly: true
+            survey_team: 
+              type: object
+              properties:
+                team_id: 
+                  type: string
+                  example: "456789"
+                name:
+                  type: string
+                  example: "Team 1"
+                  readOnly: true
+            languages:
+              type: array
+              items:
+                type: string
+                enum: [Abkhazian,Afar,Afrikaans,Akan,Albanian,Amharic,Arabic,Aragonese,Armenian,Assamese,Avaric,Avestan,Aymara,Azerbaijani,Bambara,Bashkir,Basque,Belarusian,Bengali,Bihari,Bislama,Bosnian,Breton,Bulgarian,Burmese,Catalan,Chamorro,Chechen,Chichewa,Chinese (Hong Kong),Chinese (PRC),Chinese (Singapore),Chinese (Taiwan),Chinese (simplified),Church Slavic,Chuvash,Cornish,Corsican,Cree,Croatian,Czech,Danish,Divehi,Dutch,Dzongkha,English,English (Australia),English (Canada),English (South Africa),English (UK),Esperanto,Estonian,Ewe,Faroese,Fijian,Finnish,French,French (Belgium),French (France),French (Luxembourg),French (Monaco),French (Switzerland),French-Canadian,Fulah,Galician,Ganda,Georgian,German,German (Austria),German (Switzerland),Greek,Guarani,Gujarati,Haitian,Hausa,Hebrew,Herero,Hindi,Hiri Motu,Hungarian,Icelandic,Ido,Igbo,Indonesian,Interlingua,Interlingue,Inuktitut,Inupiaq,Irish,Italian,Italian (Switzerland),Japanese,Javanese,Kalaallisut,Kannada,Kanuri,Kashmiri,Kazakh,Khmer,Kikuyu,Kinyarwanda,Kirghiz,Kirundi,Komi,Kongo,Korean,Kurdish,Kwanyama,Lao,Latin,Latvian,Limburgish,Lingala,Lithuanian,Luba-Katanga,Luxembourgish,Macedonian,Malagasy,Malay,Malayalam,Maltese,Manx,Maori,Marathi,Marshallese,Mongolian,Nauru,Navajo,Ndonga,Nepali,North Ndebele,Northern Sami,Norwegian,Norwegian Bokmal,Norwegian Nynorsk,Occitan,Ojibwa,Oriya,,Oromo,Ossetian,Pali,Panjabi,Pashto,Persian,Polish,Portuguese,Portuguese (Brazil),Quechua,Raeto-Romance,Romanian,Russian,Samoan,Sango,Sanskrit,Sardinian,Scottish Gaelic,Serbian,Shona,Sichuan Yi,Sindhi,Sinhala,Slovak,Slovenian,Somali,South Ndebele,Southern Sotho,Spanish,Spanish (Mexico),Spanish (United States),Sundanese,Swahili,Swati,Swedish,Tagalog,Tahitian,Tajik,Tamil,Tatar,Telugu,Thai,Tibetan,Tigrinya,Tonga,Tsonga,Tswana,Turkish,Turkmen,Twi,Uighur,Ukrainian,Urdu,Uzbek,Venda,Vietnamese,Volapuk,Walloon,Welsh,Western Frisian,Wolof,Xhosa,Yiddish,Yoruba,Zhuang,Zulu]
+              example: [ "English","Spanish","French" ]
+            theme:
+              type: string
+              example: "110045"
+            forward_only:
+              type: boolean
+              example: false
+            dup_protection:
+              type: string
+              example: "cookie"
+            survey_theme:
+              type: string
+              example: "11147"
+            overall_quota:
+              type: integer
+              format: int32
+              example: 100
+            auto_close:
+              type: string
+              format: date-time
+              example: '2017-07-21T17:32:28Z'
+            pages:
+              type: array
+              items:
+                type: object
+                properties:
+                  page_id:
+                    type: integer
+                    format: int32
+                    example: 1
+                    readOnly: true
+                  url:
+                    type: string
+                    example: "https://restapisurveygizmo.com/v5/survey/{survey_id}/1"
+                    readOnly: true
+    surveys_output:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            survey_id:
+              type: string
+              example: "1234567"
+              readOnly: true
+            survey_title:
+                type: string
+                example: "ABC Company Survey"
+            internal_title:
+              type: string
+              example: "ABC Company Survey Internal Title"
+            multilang_titles:
+              type: object
+              properties:
+                English: 
+                  type: string
+                  example: "ABC Company Survey"
+                Spanish: 
+                  type: string
+                  example: "Encuesta de la Empresa ABC"
+            survey_type:
+              type: string
+              example: "survey"
+              enum:
+                - "survey"
+                - "poll"
+                - "form"
+                - "quiz"
+            survey_status:
+              type: string
+              example: open
+              enum:
+                - "open"
+                - "closed"
+                - "deleted"
+                - "archived"
+            date_created:
+              type: string
+              format: date-time
+              example: "2017-07-21T17:32:28Z"
+              readOnly: true
+            date_modified:
+              type: string
+              format: date-time
+              example: "2017-07-21T17:32:28Z"
+              readOnly: true
+            survey_team: 
+              type: object
+              properties:
+                team_id: 
+                  type: string
+                  example: "456789"
+                name:
+                  type: string
+                  example: "Team 1"
+                  readOnly: True
+            languages:
+              type: array
+              items:
+                type: string
+                enum: [Abkhazian,Afar,Afrikaans,Akan,Albanian,Amharic,Arabic,Aragonese,Armenian,Assamese,Avaric,Avestan,Aymara,Azerbaijani,Bambara,Bashkir,Basque,Belarusian,Bengali,Bihari,Bislama,Bosnian,Breton,Bulgarian,Burmese,Catalan,Chamorro,Chechen,Chichewa,Chinese (Hong Kong),Chinese (PRC),Chinese (Singapore),Chinese (Taiwan),Chinese (simplified),Church Slavic,Chuvash,Cornish,Corsican,Cree,Croatian,Czech,Danish,Divehi,Dutch,Dzongkha,English,English (Australia),English (Canada),English (South Africa),English (UK),Esperanto,Estonian,Ewe,Faroese,Fijian,Finnish,French,French (Belgium),French (France),French (Luxembourg),French (Monaco),French (Switzerland),French-Canadian,Fulah,Galician,Ganda,Georgian,German,German (Austria),German (Switzerland),Greek,Guarani,Gujarati,Haitian,Hausa,Hebrew,Herero,Hindi,Hiri Motu,Hungarian,Icelandic,Ido,Igbo,Indonesian,Interlingua,Interlingue,Inuktitut,Inupiaq,Irish,Italian,Italian (Switzerland),Japanese,Javanese,Kalaallisut,Kannada,Kanuri,Kashmiri,Kazakh,Khmer,Kikuyu,Kinyarwanda,Kirghiz,Kirundi,Komi,Kongo,Korean,Kurdish,Kwanyama,Lao,Latin,Latvian,Limburgish,Lingala,Lithuanian,Luba-Katanga,Luxembourgish,Macedonian,Malagasy,Malay,Malayalam,Maltese,Manx,Maori,Marathi,Marshallese,Mongolian,Nauru,Navajo,Ndonga,Nepali,North Ndebele,Northern Sami,Norwegian,Norwegian Bokmal,Norwegian Nynorsk,Occitan,Ojibwa,Oriya,,Oromo,Ossetian,Pali,Panjabi,Pashto,Persian,Polish,Portuguese,Portuguese (Brazil),Quechua,Raeto-Romance,Romanian,Russian,Samoan,Sango,Sanskrit,Sardinian,Scottish Gaelic,Serbian,Shona,Sichuan Yi,Sindhi,Sinhala,Slovak,Slovenian,Somali,South Ndebele,Southern Sotho,Spanish,Spanish (Mexico),Spanish (United States),Sundanese,Swahili,Swati,Swedish,Tagalog,Tahitian,Tajik,Tamil,Tatar,Telugu,Thai,Tibetan,Tigrinya,Tonga,Tsonga,Tswana,Turkish,Turkmen,Twi,Uighur,Ukrainian,Urdu,Uzbek,Venda,Vietnamese,Volapuk,Walloon,Welsh,Western Frisian,Wolof,Xhosa,Yiddish,Yoruba,Zhuang,Zulu]
+              example: [ "English","Spanish","French" ]
+            theme:
+              type: string
+              example: "110045"
+            forward_only:
+              type: boolean
+              example: false
+            dup_protection:
+              type: string
+              example: "cookie"
+            survey_theme:
+              type: string
+              example: "11147"
+            overall_quota:
+              type: integer
+              format: int32
+              example: 100
+            auto_close:
+              type: string
+              format: date-time
+              example: '2017-07-21T17:32:28Z'
+            pages:
+              type: array
+              items:
+                type: object
+                properties:
+                  page_id:
+                    type: integer
+                    format: int32
+                    example: 1
+                    readOnly: true
+                  url:
+                    type: string
+                    example: "https://restapisurveygizmo.com/v5/survey/{survey_id}/1"
+                    readOnly: true
+    surveys_list_output:
+      type: object
+      properties:
+        total_count:
+          type: integer
+          description: The number of surveys returned
+          format: integer
+          example: 1000
+          readOnly: true
+        page:
+          type: integer
+          description: Page number currently displayed
+          format: int64
+          example: 1
+        total_pages:
+          type: integer
+          description: Number of pages returned
+          format: int64
+          example: 100
+          readOnly: true
+        results_per_page:
+          type: integer
+          description: Number results per page
+          format: int64
+          example: 50
+        data:
+          type: object
+          properties:
+            survey_id:
+              type: string
+              example: "1234567"
+              readOnly: true
+            survey_title:
+                type: string
+                example: "ABC Company Survey"
+            internal_title:
+              type: string
+              example: "ABC Company Survey Internal Title"
+            multilang_titles:
+              type: object
+              properties:
+                English: 
+                  type: string
+                  example: "ABC Company Survey"
+                Spanish: 
+                  type: string
+                  example: "Encuesta de la Empresa ABC"
+            survey_type:
+              type: string
+              example: "survey"
+              enum:
+                - survey
+                - poll
+                - form
+                - quiz
+            survey_status:
+              type: string
+              example: open
+              enum:
+                - "open"
+                - "closed"
+                - "deleted"
+                - "archived"
+            date_created:
+              type: string
+              format: date-time
+              example: "2017-07-21T17:32:28Z"
+              readOnly: true
+            date_modified:
+              type: string
+              format: date-time
+              example: "2017-07-21T17:32:28Z"
+              readOnly: true
+            survey_team: 
+              type: object
+              properties:
+                team_id: 
+                  type: string
+                  example: "456789"
+                name:
+                  type: string
+                  example: "Team 1"
+                  readOnly: true
+            languages:
+              type: array
+              items:
+                type: string
+                enum: [Abkhazian,Afar,Afrikaans,Akan,Albanian,Amharic,Arabic,Aragonese,Armenian,Assamese,Avaric,Avestan,Aymara,Azerbaijani,Bambara,Bashkir,Basque,Belarusian,Bengali,Bihari,Bislama,Bosnian,Breton,Bulgarian,Burmese,Catalan,Chamorro,Chechen,Chichewa,Chinese (Hong Kong),Chinese (PRC),Chinese (Singapore),Chinese (Taiwan),Chinese (simplified),Church Slavic,Chuvash,Cornish,Corsican,Cree,Croatian,Czech,Danish,Divehi,Dutch,Dzongkha,English,English (Australia),English (Canada),English (South Africa),English (UK),Esperanto,Estonian,Ewe,Faroese,Fijian,Finnish,French,French (Belgium),French (France),French (Luxembourg),French (Monaco),French (Switzerland),French-Canadian,Fulah,Galician,Ganda,Georgian,German,German (Austria),German (Switzerland),Greek,Guarani,Gujarati,Haitian,Hausa,Hebrew,Herero,Hindi,Hiri Motu,Hungarian,Icelandic,Ido,Igbo,Indonesian,Interlingua,Interlingue,Inuktitut,Inupiaq,Irish,Italian,Italian (Switzerland),Japanese,Javanese,Kalaallisut,Kannada,Kanuri,Kashmiri,Kazakh,Khmer,Kikuyu,Kinyarwanda,Kirghiz,Kirundi,Komi,Kongo,Korean,Kurdish,Kwanyama,Lao,Latin,Latvian,Limburgish,Lingala,Lithuanian,Luba-Katanga,Luxembourgish,Macedonian,Malagasy,Malay,Malayalam,Maltese,Manx,Maori,Marathi,Marshallese,Mongolian,Nauru,Navajo,Ndonga,Nepali,North Ndebele,Northern Sami,Norwegian,Norwegian Bokmal,Norwegian Nynorsk,Occitan,Ojibwa,Oriya,,Oromo,Ossetian,Pali,Panjabi,Pashto,Persian,Polish,Portuguese,Portuguese (Brazil),Quechua,Raeto-Romance,Romanian,Russian,Samoan,Sango,Sanskrit,Sardinian,Scottish Gaelic,Serbian,Shona,Sichuan Yi,Sindhi,Sinhala,Slovak,Slovenian,Somali,South Ndebele,Southern Sotho,Spanish,Spanish (Mexico),Spanish (United States),Sundanese,Swahili,Swati,Swedish,Tagalog,Tahitian,Tajik,Tamil,Tatar,Telugu,Thai,Tibetan,Tigrinya,Tonga,Tsonga,Tswana,Turkish,Turkmen,Twi,Uighur,Ukrainian,Urdu,Uzbek,Venda,Vietnamese,Volapuk,Walloon,Welsh,Western Frisian,Wolof,Xhosa,Yiddish,Yoruba,Zhuang,Zulu]
+              example: [ "English","Spanish","French" ]
+            theme:
+              type: string
+              example: "110045"
+            forward_only:
+              type: boolean
+              example: false
+            dup_protection:
+              type: string
+              example: "cookie"
+            survey_theme:
+              type: string
+              example: "11147"
+            overall_quota:
+              type: integer
+              format: int32
+              example: 100
+            auto_close:
+              type: string
+              format: date-time
+              example: '2017-07-21T17:32:28Z'
+            pages:
+              type: array
+              items:
+                type: object
+                properties:
+                  page_id:
+                    type: integer
+                    format: int32
+                    example: 1
+                    readOnly: true
+                  url:
+                    type: string
+                    example: "https://restapisurveygizmo.com/v5/survey/{survey_id}/1"
+                    readOnly: true
+    surveys_complete_output:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            survey_id:
+              type: string
+              example: "1234567"
+              readOnly: true
+            survey_type:
+              type: string
+              example: "survey"
+              enum:
+                - "survey"
+                - "poll"
+                - "form"
+                - "quiz"
+            survey_title:
+              type: string
+              example: "ABC Company Survey"
+            internal_title:
+              type: string
+              example: "ABC Company Survey Internal Title"
+            multilang_titles:
+              type: object
+              properties:
+                English: 
+                  type: string
+                  example: "ABC Company Survey"
+                Spanish: 
+                  type: string
+                  example: "Encuesta de la Empresa ABC"
+            survey_status:
+              type: string
+              example: open
+              enum:
+                - "open"
+                - "closed"
+                - "deleted"
+                - "archived"
+            date_created:
+              type: string
+              format: date-time
+              example: "2017-07-21T17:32:28Z"
+            date_modified:
+              type: string
+              format: date-time
+              example: "2017-07-21T17:32:28Z"
+            survey_team: 
+              type: object
+              properties:
+                team_id: 
+                  type: string
+                  example: "456789"
+                name:
+                  type: string
+                  example: "Team 1"
+                  readOnly: true
+            languages:
+              type: array
+              items:
+                type: string
+                enum: [Abkhazian,Afar,Afrikaans,Akan,Albanian,Amharic,Arabic,Aragonese,Armenian,Assamese,Avaric,Avestan,Aymara,Azerbaijani,Bambara,Bashkir,Basque,Belarusian,Bengali,Bihari,Bislama,Bosnian,Breton,Bulgarian,Burmese,Catalan,Chamorro,Chechen,Chichewa,Chinese (Hong Kong),Chinese (PRC),Chinese (Singapore),Chinese (Taiwan),Chinese (simplified),Church Slavic,Chuvash,Cornish,Corsican,Cree,Croatian,Czech,Danish,Divehi,Dutch,Dzongkha,English,English (Australia),English (Canada),English (South Africa),English (UK),Esperanto,Estonian,Ewe,Faroese,Fijian,Finnish,French,French (Belgium),French (France),French (Luxembourg),French (Monaco),French (Switzerland),French-Canadian,Fulah,Galician,Ganda,Georgian,German,German (Austria),German (Switzerland),Greek,Guarani,Gujarati,Haitian,Hausa,Hebrew,Herero,Hindi,Hiri Motu,Hungarian,Icelandic,Ido,Igbo,Indonesian,Interlingua,Interlingue,Inuktitut,Inupiaq,Irish,Italian,Italian (Switzerland),Japanese,Javanese,Kalaallisut,Kannada,Kanuri,Kashmiri,Kazakh,Khmer,Kikuyu,Kinyarwanda,Kirghiz,Kirundi,Komi,Kongo,Korean,Kurdish,Kwanyama,Lao,Latin,Latvian,Limburgish,Lingala,Lithuanian,Luba-Katanga,Luxembourgish,Macedonian,Malagasy,Malay,Malayalam,Maltese,Manx,Maori,Marathi,Marshallese,Mongolian,Nauru,Navajo,Ndonga,Nepali,North Ndebele,Northern Sami,Norwegian,Norwegian Bokmal,Norwegian Nynorsk,Occitan,Ojibwa,Oriya,,Oromo,Ossetian,Pali,Panjabi,Pashto,Persian,Polish,Portuguese,Portuguese (Brazil),Quechua,Raeto-Romance,Romanian,Russian,Samoan,Sango,Sanskrit,Sardinian,Scottish Gaelic,Serbian,Shona,Sichuan Yi,Sindhi,Sinhala,Slovak,Slovenian,Somali,South Ndebele,Southern Sotho,Spanish,Spanish (Mexico),Spanish (United States),Sundanese,Swahili,Swati,Swedish,Tagalog,Tahitian,Tajik,Tamil,Tatar,Telugu,Thai,Tibetan,Tigrinya,Tonga,Tsonga,Tswana,Turkish,Turkmen,Twi,Uighur,Ukrainian,Urdu,Uzbek,Venda,Vietnamese,Volapuk,Walloon,Welsh,Western Frisian,Wolof,Xhosa,Yiddish,Yoruba,Zhuang,Zulu]
+              example: [ "English","Spanish","French" ]
+            theme:
+              type: string
+              example: "110045"
+            forward_only:
+              type: boolean
+              example: false
+            dup_protection:
+              type: string
+              example: "cookie"
+            survey_theme:
+              type: string
+              example: "11147"
+            overall_quota:
+              type: integer
+              format: int32
+              example: 100
+            auto_close:
+              type: string
+              format: date-time
+              example: '2017-07-21T17:32:28Z'
+            pages:
+              type: array
+              items:
+                type: object
+                properties:
+                  page_id:
+                    type: integer
+                    format: int32
+                    example: 1
+                    readOnly: true
+                  page_title:
+                    type: object
+                    properties:
+                      English:
+                        type: string
+                        example: "My english page title"
+                        readOnly: true
+                      Spanish: 
+                        type: string
+                        example: "Mi título de página en español"
+                        readOnly: true
+                  description:
+                    type: object
+                    properties:
+                      English:
+                        type: string
+                        example: "My english page description"
+                      Spanish: 
+                        type: string
+                        example: "La descripción de mi página en español"
+                  after:
+                    type: integer
+                    format: int32
+                    description: ID of page to follow
+                    example: 1
+                  disable:
+                    type: boolean
+                    description: Set page to disabled
+                    example: true
+                  piped_from:
+                    type: integer
+                    format: int32
+                    description: Set question id to repeat page on
+                    example: 5
+                  questions:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        question_id:
+                          type: integer
+                          format: int32
+                          example: 1
+                          readOnly: true
+                        base_type: 
+                          type: string
+                          example: "Question"
+                          enum:
+                            - "Question"
+                            - "Decorative"
+                            - "Action"
+                          readOnly: true
+                        type:
+                          type: string
+                          example: "checkbox"
+                          enum:
+                            - "cascading_dropdown"
+                            - "checkbox"
+                            - "conjoint_new"
+                            - "cont_sum"
+                            - "email"
+                            - "essay"
+                            - "file"
+                            - "group"
+                            - "heatmap"
+                            - "hidden"
+                            - "image_select"
+                            - "instructions"
+                            - "matrix"
+                            - "maxdiff"
+                            - "menu"
+                            - "multi_slider"
+                            - "multi-textbox"
+                            - "nps"
+                            - "radio"
+                            - "rank"
+                            - "reaction"
+                            - "slider"
+                            - "table"
+                            - "textbox"
+                            - "texthighlighter"
+                            - "signature"
+                            - "urlredirect"
+                          readOnly: true
+                        subtype:
+                          type: string
+                          example: "email"
+                          enum:
+                            - email
+                            - date
+                            - regex
+                          description: "Subtype contain  the validation setting applied to Textbox questions"
+                        question_title:
+                          type: object
+                          properties:
+                            English: 
+                              type: string
+                              example: "Which do you prefer, cats or dogs?"
+                            Spanish:
+                              type: string
+                              example: "¿Qué prefieres, gatos o perros?"
+                        alias:
+                          type: string
+                          example: "pet_perference"
+                        spss_varname:
+                          type: string
+                          example: "var_petpref"
+                        css_class:
+                          type: string
+                          example: "sg-hide"
+                        question_instructions:
+                          type: object
+                          properties:
+                            English:
+                              type: string
+                              example: "Select one"
+                            Spanish:
+                              type: string
+                              example: "Seleccione uno"
+                        question_instructions_above:
+                          type: boolean
+                          example: false
+                        has_logic_deps:
+                          type: boolean
+                          example: true
+                          readOnly: true
+                        hidden:
+                          type: boolean
+                          example: false
+                          description: "Returns true if question is hidden by default"
+                        hide_after_response:
+                          type: boolean
+                          example: false
+                        required:
+                          type: boolean
+                          example: false
+                        soft_required:
+                          type: boolean
+                          example: false
+                        comment:
+                          type: boolean
+                          example: false
+                        option_sort:
+                          type: string
+                          example: "random"
+                          enum:
+                            - "random"
+                            - "alpha"
+                        orientation:
+                          type: string
+                          example: "vertical"
+                          enum:
+                            - "vertical"
+                            - "horizontal"
+                            - "stacked"
+                        labels_right:
+                          type: boolean
+                          example: true
+                        break_after:
+                          type: boolean
+                          example: false
+                          description: For Contact Form and Custom Group questions. Indicates a line break after the subquestion.
+                        url_redirect_url:
+                          type: string
+                          example: "http://www.surveygizmo.com"
+    surveypages_post_input:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            page_title:
+              type: object
+              properties:
+                English:
+                  type: string
+                  example: "My english page title"
+                Spanish: 
+                  type: string
+                  example: "Mi título de página en español"
+            description:
+              type: object
+              properties:
+                English:
+                  type: string
+                  example: "My english page description"
+                Spanish: 
+                  type: string
+                  example: "La descripción de mi página en español"
+            after:
+              type: integer
+              format: int32
+              description: ID of page to follow
+              example: 1
+            disable:
+              type: boolean
+              description: Set page to disabled
+              example: true
+            piped_from:
+              type: integer
+              format: int32
+              description: Set question id to repeat page on
+              example: 5
+            questions:
+              type: array
+              items:
+                type: object
+                properties:
+                  question_id:
+                    type: integer
+                    format: int32
+                    example: 1
+                    readOnly: true
+                  url:
+                    type: string
+                    example: "https://restapisurveygizmo.com/v5/survey/{survey_id}/pages/{page_id}/questions/1"
+                    readOnly: true
+          required:
+            - page_title
+    surveypages_put_input:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            page_title:
+              type: object
+              properties:
+                English:
+                  type: string
+                  example: "My english page title"
+                Spanish: 
+                  type: string
+                  example: "Mi título de página en español"
+            description:
+              type: object
+              properties:
+                English:
+                  type: string
+                  example: "My english page description"
+                Spanish: 
+                  type: string
+                  example: "La descripción de mi página en español"
+            after:
+              type: integer
+              format: int32
+              description: ID of page to follow
+              example: 1
+            disable:
+              type: boolean
+              description: Set page to disabled
+              example: true
+            piped_from:
+              type: integer
+              format: int32
+              description: Set question id to repeat page on
+              example: 5
+            questions:
+              type: array
+              items:
+                type: object
+                properties:
+                  question_id:
+                    type: integer
+                    format: int32
+                    example: 1
+                    readOnly: true
+                  url:
+                    type: string
+                    example: "https://restapisurveygizmo.com/v5/survey/{survey_id}/pages/{page_id}/questions/1"
+                    readOnly: true
+    surveypages_list_output:
+      type: object
+      properties:
+        total_count:
+          type: integer
+          description: The number of surveys returned
+          format: integer
+          example: 1000
+          readOnly: true
+        page:
+          type: integer
+          description: Page number currently displayed
+          format: int64
+          example: 1
+        total_pages:
+          type: integer
+          description: Number of pages returned
+          format: int64
+          example: 100
+          readOnly: true
+        results_per_page:
+          type: integer
+          description: Number results per page
+          format: int64
+          example: 50
+        data:
+          type: object
+          properties:
+            page_id:
+              type: string
+              example: "5"
+              readOnly: true
+            page_title:
+              type: object
+              properties:
+                English:
+                  type: string
+                  example: "My english page title"
+                Spanish: 
+                  type: string
+                  example: "Mi título de página en español"
+            description:
+              type: object
+              properties:
+                English:
+                  type: string
+                  example: "My english page description"
+                Spanish: 
+                  type: string
+                  example: "La descripción de mi página en español"
+            after:
+              type: integer
+              format: int32
+              description: ID of page to follow
+              example: 1
+            disable:
+              type: boolean
+              description: Set page to disabled
+              example: true
+            piped_from:
+              type: integer
+              format: int32
+              description: Set question id to repeat page on
+              example: 5
+            questions:
+              type: array
+              items:
+                type: object
+                properties:
+                  question_id:
+                    type: integer
+                    format: int32
+                    example: 1
+                    readOnly: true
+                  url:
+                    type: string
+                    example: "https://restapisurveygizmo.com/v5/survey/{survey_id}/pages/{page_id}/questions/1"
+                    readOnly: true
+    surveypages_output:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            page_id:
+              type: string
+              example: "5"
+              readOnly: true
+            page_title:
+              type: object
+              properties:
+                English:
+                  type: string
+                  example: "My english page title"
+                Spanish: 
+                  type: string
+                  example: "Mi título de página en español"
+            description:
+              type: object
+              properties:
+                English:
+                  type: string
+                  example: "My english page description"
+                Spanish: 
+                  type: string
+                  example: "La descripción de mi página en español"
+            after:
+              type: integer
+              format: int32
+              description: ID of page to follow
+              example: 1
+            disable:
+              type: boolean
+              description: Set page to disabled
+              example: true
+            piped_from:
+              type: integer
+              format: int32
+              description: Set question id to repeat page on
+              example: 5
+            questions:
+              type: array
+              items:
+                type: object
+                properties:
+                  question_id:
+                    type: integer
+                    format: int32
+                    example: 1
+                    readOnly: true
+                  url:
+                    type: string
+                    example: "https://restapisurveygizmo.com/v5/survey/{survey_id}/pages/{page_id}/questions/1"
+                    readOnly: true
+    survey_response_filters:
+      type: object
+      properties:
+        object: 
+          type: string
+          example: "survey_responses"
+          enum: ["survey_responses", "survey","survey_campaign"]
+        filters:
+          type: array
+          description: Array of filter objects
+          items:
+              type: object
+              properties:
+                field:
+                  type: string
+                  example: "date_submitted"
+                  enum: ["date_submitted", "question_{id}", "url_{variablename}", "is_test_data", "contact_id", "response_status"]
+                operator:
+                  type: string
+                  example: "="
+                  enum: ["=","<>","!=","<",">","<=",">=","is_not_null", "is_null","in" ]
+                value:
+                  type: string
+                  example: "2017-12-29"
+    # survey_response_filters:
+    #   type: object
+    #   properties:
+    #     object: 
+    #       type: string
+    #       example: "survey_responses"
+    #       enum: ["survey_responses", "survey","survey_campaign"]
+    #     query:
+    #       type: object
+    #       properties:
+    #         filters:
+    #           type: object
+    #           description: Array of filter objects
+    #           properties:
+    #             field:
+    #               type: string
+    #               example: "date_submitted"
+    #               enum: ["date_submitted", "question_{id}", "url_{variablename}", "is_test_data", "contact_id", "response_status"]
+    #             operator:
+    #               type: string
+    #               example: "="
+    #               enum: ["=","<>","!=","<",">","<=",">=","is_not_null", "is_null","in" ]
+    #             value:
+    #               type: string
+    #               example: "2017-12-29"
+    # survey_response_filters:
+    #   type: object
+    #   properties:
+    #     object: 
+    #       type: string
+    #       example: "survey_responses"
+    #       enum: ["survey_responses", "survey","survey_campaign"]
+    #     query:
+    #       type: object
+    #       description: Query object.
+    #       properties:
+    #         andor:
+    #           type: string
+    #           example: "and"
+    #           enum: ["and","or"]
+    #         rules:
+    #           type: object
+    #           description: Array of filter objects
+    #           properties:
+    #             andor:
+    #               type: string
+    #               example: "and"
+    #               enum: ["and","or"]
+    #             field:
+    #               type: string
+    #               example: "date_submitted"
+    #               enum: ["date_submitted", "question_{id}", "url_{variablename}", "is_test_data", "contact_id", "response_status"]
+    #             operator:
+    #               type: string
+    #               example: "="
+    #               enum: ["=","<>","!=","<",">","<=",">=","is_not_null", "is_null","in" ]
+    #             value:
+    #               type: string
+    #               example: "2017-12-29"
+    survey_responses_post_input:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            response_id:
+              type: string
+              description: Response ID
+              example: "1"
+              readOnly: true
+            contact_id:
+              type: string
+              description: Contact ID
+              example: "100025678"
+              readOnly: true
+            status:
+              type: string
+              description: Response status
+              example: "Partial"
+              enum:
+                - complete
+                - partial
+                - disqualified
+                - deleted
+              default: complete
+            is_test_data:
+              type: boolean
+              description: Flag for test responses
+              example: true
+              default: false
+            date_started:
+              type: string
+              description: Date and time response was submitted.
+              format: date-ime
+              example: "2017-07-21T17:00:28Z"
+              readOnly: true
+            date_submitted:
+              type: string
+              description: Date and time response was submitted.
+              format: date-ime
+              example: "2017-07-21T17:32:28Z"
+              readOnly: true
+            session_id:
+              type: string
+              description: Session ID
+              example: "1461951104_57239a80560084.08255846"
+              readOnly: true
+            language:
+              type: string
+              description: Language in which the survey was taken.
+              example: "English"
+            ip_address:
+              type: string
+              description: Survey respondent's IP address
+              example: "50.123.456.789"
+              readOnly: true
+            referrer:   
+              type: string
+              description: The URL that linked to the survey.
+              example: "http://www.surveygizmo.com"
+              readOnly: true
+            user_agent:   
+              type: string
+              description: The survey respondent's user agent.
+              example: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36"
+              readOnly: true
+            longitude:
+              type: string
+              description: Geodata latitude
+              example: "-81.16429901123"
+              readOnly: true
+            latitude:
+              type: string
+              description: Geodata longitude
+              example: "43.023300170898"
+              readOnly: true
+            country:
+              type: string
+              description: Geodata country
+              example: "Canada"
+              readOnly: true
+            city:
+              type: string
+              description: Geodata city
+              example: "London"
+              readOnly: true
+            region:
+              type: string
+              description: Geodata region
+              example: "ON"
+              readOnly: true
+            postal:
+              type: string
+              description: Geodata postal code
+              example: "N5V"
+              readOnly: true
+            url_variables:
+              type: object
+              description: URL variables passed into the survey. 
+              properties:
+                urlvariablename1:
+                  type: string
+                  example: "southwest"
+                urlvariablename2: 
+                  type: string
+                  example: "16487" 
+            questions:
+              type: array
+              description: Array of data from survey questions
+              items:
+                type: object
+                properties:
+                  question_id:
+                    type: string
+                    description: Question ID
+                    example: 1
+                  question_title:
+                    type: string
+                    description: Question title
+                    example: "Which do you prefer, cats or dogs?"
+                    readOnly: true
+                  type: 
+                    type: string
+                    description: Question type
+                    example: "checkbox"
+                    enum:
+                      - "cascading_dropdown"
+                      - "checkbox"
+                      - "conjoint_new"
+                      - "cont_sum"
+                      - "email"
+                      - "essay"
+                      - "file"
+                      - "group"
+                      - "heatmap"
+                      - "hidden"
+                      - "image_select"
+                      - "instructions"
+                      - "matrix"
+                      - "maxdiff"
+                      - "menu"
+                      - "multi_slider"
+                      - "multi-textbox"
+                      - "nps"
+                      - "radio"
+                      - "rank"
+                      - "reaction"
+                      - "slider"
+                      - "table"
+                      - "textbox"
+                      - "texthighlighter"
+                      - "signature"
+                      - "urlredirect"
+                    readOnly: true
+                  page_id:
+                    type: string
+                    description: Page ID
+                    example: "1"
+                    readOnly: true
+                  shown:
+                    type: boolean
+                    description: Flag indicating whether question was show to respondent.
+                    example: true
+                    readOnly: true
+                  answer:
+                    type: string
+                    description: "Option sku or of answer to select. For open-text fields pass response text."
+                    example: "10001"
+          required:
+            - status
+            - questions
+    survey_responses_put_input:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            response_id:
+              type: string
+              description: Response ID
+              example: "1"
+              readOnly: true
+            contact_id:
+              type: string
+              description: Contact ID
+              example: "100025678"
+              readOnly: true
+            status:
+              type: string
+              description: Response status
+              example: "Partial"
+              enum:
+                - complete
+                - partial
+                - disqualified
+                - deleted
+              default: complete
+            is_test_data:
+              type: boolean
+              description: Flag for test responses
+              example: true
+              default: false
+            date_started:
+              type: string
+              description: Date and time response was submitted.
+              format: date-ime
+              example: "2017-07-21T17:00:28Z"
+              readOnly: true
+            date_submitted:
+              type: string
+              description: Date and time response was submitted.
+              format: date-ime
+              example: "2017-07-21T17:32:28Z"
+              readOnly: true
+            session_id:
+              type: string
+              description: Session ID
+              example: "1461951104_57239a80560084.08255846"
+              readOnly: true
+            language:
+              type: string
+              description: Language in which the survey was taken.
+              example: "English"
+            ip_address:
+              type: string
+              description: Survey respondent's IP address
+              example: "50.123.456.789"
+              readOnly: true
+            referrer:   
+              type: string
+              description: The URL that linked to the survey.
+              example: "http://www.surveygizmo.com"
+              readOnly: true
+            user_agent:   
+              type: string
+              description: The survey respondent's user agent.
+              example: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36"
+              readOnly: true
+            longitude:
+              type: string
+              description: Geodata latitude
+              example: "-81.16429901123"
+              readOnly: true
+            latitude:
+              type: string
+              description: Geodata longitude
+              example: "43.023300170898"
+              readOnly: true
+            country:
+              type: string
+              description: Geodata country
+              example: "Canada"
+              readOnly: true
+            city:
+              type: string
+              description: Geodata city
+              example: "London"
+              readOnly: true
+            region:
+              type: string
+              description: Geodata region
+              example: "ON"
+              readOnly: true
+            postal:
+              type: string
+              description: Geodata postal code
+              example: "N5V"
+              readOnly: true
+            url_variables:
+              type: object
+              description: URL variables passed into the survey. 
+              properties:
+                urlvariablename1:
+                  type: string
+                  example: "southwest"
+                urlvariablename2: 
+                  type: string
+                  example: "16487" 
+            questions:
+              type: array
+              description: Array of data from survey questions
+              items:
+                type: object
+                properties:
+                  question_id:
+                    type: string
+                    description: Question ID
+                    example: 1
+                  question_title:
+                    type: string
+                    description: Question title
+                    example: "Which do you prefer, cats or dogs?"
+                    readOnly: true
+                  type: 
+                    type: string
+                    description: Question type
+                    example: "checkbox"
+                    enum:
+                      - "cascading_dropdown"
+                      - "checkbox"
+                      - "conjoint_new"
+                      - "cont_sum"
+                      - "email"
+                      - "essay"
+                      - "file"
+                      - "group"
+                      - "heatmap"
+                      - "hidden"
+                      - "image_select"
+                      - "instructions"
+                      - "matrix"
+                      - "maxdiff"
+                      - "menu"
+                      - "multi_slider"
+                      - "multi-textbox"
+                      - "nps"
+                      - "radio"
+                      - "rank"
+                      - "reaction"
+                      - "slider"
+                      - "table"
+                      - "textbox"
+                      - "texthighlighter"
+                      - "signature"
+                      - "urlredirect"
+                    readOnly: true
+                  page_id:
+                    type: string
+                    description: Page ID
+                    example: "1"
+                    readOnly: true
+                  shown:
+                    type: boolean
+                    description: Flag indicating whether question was show to respondent.
+                    example: true
+                    readOnly: true
+                  answer: 
+                    type: string
+                    description: "Reporting value of selected answer"
+                    example: "1"
+                  answer_id:
+                    type: string
+                    description: "Option sku of selected answer"
+                    example: "10001"
+                    readOnly: true
+    survey_responses_list_output:
+      type: object
+      properties:
+        total_count:
+          type: integer
+          description: The number of surveys returned
+          format: integer
+          example: 1000
+          readOnly: true
+        page:
+          type: integer
+          description: Page number currently displayed
+          format: int64
+          example: 1
+        total_pages:
+          type: integer
+          description: Number of pages returned
+          format: int64
+          example: 100
+          readOnly: true
+        results_per_page:
+          type: integer
+          description: Number results per page
+          format: int64
+          example: 50
+        data:
+          type: object
+          properties:
+            response_id:
+              type: string
+              description: Response ID
+              example: "1"
+              readOnly: true
+            contact_id:
+              type: string
+              description: Contact ID
+              example: "100025678"
+              readOnly: true
+            status:
+              type: string
+              description: Response status
+              example: "Partial"
+              enum:
+                - complete
+                - partial
+                - disqualified
+                - deleted
+            is_test_data:
+              type: boolean
+              description: Flag for test responses
+              example: true
+            date_started:
+              type: string
+              description: Date and time response was submitted.
+              format: date-ime
+              example: "2017-07-21T17:00:28Z"
+              readOnly: true
+            date_submitted:
+              type: string
+              description: Date and time response was submitted.
+              format: date-ime
+              example: "2017-07-21T17:32:28Z"
+              readOnly: true
+            session_id:
+              type: string
+              description: Session ID
+              example: "1461951104_57239a80560084.08255846"
+              readOnly: true
+            language:
+              type: string
+              description: Language in which the survey was taken.
+              example: "English"
+            ip_address:
+              type: string
+              description: Survey respondent's IP address
+              example: "50.123.456.789"
+              readOnly: true
+            referrer:   
+              type: string
+              description: The URL that linked to the survey.
+              example: "http://www.surveygizmo.com"
+              readOnly: true
+            user_agent:   
+              type: string
+              description: The survey respondent's user agent.
+              example: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36"
+              readOnly: true
+            longitude:
+              type: string
+              description: Geodata latitude
+              example: "-81.16429901123"
+              readOnly: true
+            latitude:
+              type: string
+              description: Geodata longitude
+              example: "43.023300170898"
+              readOnly: true
+            country:
+              type: string
+              description: Geodata country
+              example: "Canada"
+              readOnly: true
+            city:
+              type: string
+              description: Geodata city
+              example: "London"
+              readOnly: true
+            region:
+              type: string
+              description: Geodata region
+              example: "ON"
+              readOnly: true
+            postal:
+              type: string
+              description: Geodata postal code
+              example: "N5V"
+              readOnly: true
+            url_variables:
+              type: object
+              description: URL variables passed into the survey. 
+              properties:
+                urlvariablename1:
+                  type: string
+                  example: "southwest"
+                urlvariablename2: 
+                  type: string
+                  example: "16487" 
+            questions:
+              type: array
+              description: Array of data from survey questions
+              items:
+                type: object
+                properties:
+                  question_id:
+                    type: string
+                    description: "Question ID"
+                    example: "1"
+                    readOnly: true
+                  question_title:
+                    type: string
+                    description: Question title
+                    example: "Which do you prefer, cats or dogs?"
+                    readOnly: true
+                  type: 
+                    type: string
+                    description: Question type
+                    example: "checkbox"
+                    enum:
+                      - "cascading_dropdown"
+                      - "checkbox"
+                      - "conjoint_new"
+                      - "cont_sum"
+                      - "email"
+                      - "essay"
+                      - "file"
+                      - "group"
+                      - "heatmap"
+                      - "hidden"
+                      - "image_select"
+                      - "instructions"
+                      - "matrix"
+                      - "maxdiff"
+                      - "menu"
+                      - "multi_slider"
+                      - "multi-textbox"
+                      - "nps"
+                      - "radio"
+                      - "rank"
+                      - "reaction"
+                      - "slider"
+                      - "table"
+                      - "textbox"
+                      - "texthighlighter"
+                      - "signature"
+                      - "urlredirect"
+                    readOnly: true
+                  page_id:
+                    type: string
+                    description: Page ID
+                    example: "1"
+                    readOnly: true
+                  shown:
+                    type: boolean
+                    description: Flag indicating whether question was show to respondent.
+                    example: true
+                    readOnly: true
+                  answer: 
+                    type: string
+                    description: "Reporting value of selected answer"
+                    example: "1"
+                    readOnly: true
+                  answer_id:
+                    type: string
+                    description: "Option sku of selected answer"
+                    example: "10001"
+    survey_responses_output:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            response_id:
+              type: string
+              description: Response ID
+              example: "1"
+            contact_id:
+              type: string
+              description: Contact ID
+              example: "100025678"
+            status:
+              type: string
+              description: Response status
+              example: "Partial"
+              enum:
+                - complete
+                - partial
+                - disqualified
+                - deleted
+            is_test_data:
+              type: boolean
+              description: Flag for test responses
+              example: true
+            date_started:
+              type: string
+              description: Date and time response was submitted.
+              format: date-ime
+              example: "2017-07-21T17:00:28Z"
+            date_submitted:
+              type: string
+              description: Date and time response was submitted.
+              format: date-ime
+              example: "2017-07-21T17:32:28Z"
+            session_id:
+              type: string
+              description: Session ID
+              example: "1461951104_57239a80560084.08255846"
+            language:
+              type: string
+              description: Language in which the survey was taken.
+              example: "English"
+            ip_address:
+              type: string
+              description: Survey respondent's IP address
+              example: "50.123.456.789"
+            referrer:   
+              type: string
+              description: The URL that linked to the survey.
+              example: "http://www.surveygizmo.com"
+            user_agent:   
+              type: string
+              description: The survey respondent's user agent.
+              example: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36"
+            longitude:
+              type: string
+              description: Geodata latitude
+              example: "-81.16429901123"
+            latitude:
+              type: string
+              description: Geodata longitude
+              example: "43.023300170898"
+            country:
+              type: string
+              description: Geodata country
+              example: "Canada"
+            city:
+              type: string
+              description: Geodata city
+              example: "London"
+            region:
+              type: string
+              description: Geodata region
+              example: "ON"
+            postal:
+              type: string
+              description: Geodata postal code
+              example: "N5V"
+            url_variables:
+              type: object
+              description: URL variables passed into the survey. 
+              properties:
+                urlvariablename1:
+                  type: string
+                  example: "southwest"
+                urlvariablename2: 
+                  type: string
+                  example: "16487" 
+            questions:
+              type: array
+              description: Array of data from survey questions
+              items:
+                type: object
+                properties:
+                  question_id:
+                    type: string
+                    description: Question ID
+                    example: "1"
+                  question_title:
+                    type: string
+                    description: Question title
+                    example: "Which do you prefer, cats or dogs?"
+                  type: 
+                    type: string
+                    description: Question type
+                    example: "checkbox"
+                    enum:
+                      - "cascading_dropdown"
+                      - "checkbox"
+                      - "conjoint_new"
+                      - "cont_sum"
+                      - "email"
+                      - "essay"
+                      - "file"
+                      - "group"
+                      - "heatmap"
+                      - "hidden"
+                      - "image_select"
+                      - "instructions"
+                      - "matrix"
+                      - "maxdiff"
+                      - "menu"
+                      - "multi_slider"
+                      - "multi-textbox"
+                      - "nps"
+                      - "radio"
+                      - "rank"
+                      - "reaction"
+                      - "slider"
+                      - "table"
+                      - "textbox"
+                      - "texthighlighter"
+                      - "signature"
+                      - "urlredirect"
+                    readOnly: true
+                  page_id:
+                    type: string
+                    description: Page ID
+                    example: "1"
+                  shown:
+                    type: boolean
+                    description: Flag indicating whether question was show to respondent.
+                    example: true
+                  answer: 
+                    type: string
+                    description: "Reporting value of selected answer"
+                    example: "1"
+                  answer_id:
+                    type: string
+                    description: "Option sku of selected answer"
+                    example: "10001"
+    response_statistics:
+      type: object
+      properties:
+        complete:
+          type: integer
+          description: Count of complete responses
+          format: int32
+          example: 10
+          readOnly: true
+        partial: 
+          type: integer
+          description: Count of partial responses
+          format: int32
+          example: 5
+          readOnly: true
+        disqualified: 
+          type: integer
+          description: Count of disqualified responses
+          format: int32
+          example: 1
+          readOnly: true
+        deleted: 
+          type: integer
+          description: Count of deleted responses
+          format: int32
+          example: 1
+          readOnly: true
+    question_statistics:
+      type: object
+      properties:
+        options:
+          type: array
+          description: Option aggregates
+          items:
+            type: object
+            properties:
+              sku:
+                type: string
+                description: Option sku
+                example: "10001"
+                readOnly: true
+              option_title: 
+                type: string
+                description: Answer option title
+                example: "Yes"
+                readOnly: true
+              reporting_value: 
+                type: string
+                description: Answer option reporting value
+                example: "1"
+                readOnly: true
+              special_setting:
+                type: string
+                description: Answer option special setting
+                example: "na"
+                enum:
+                  - na
+                  - exclusive
+                  - all
+                  - other
+                  - other_required
+                readOnly: true
+              count:
+                type: integer
+                description: Count of responses for the option
+                example: 10
+                readOnly: true
+              percent:
+                type: integer
+                description: Percent of response for the option
+                example: 37
+                readOnly: true
+        statistics:
+          type: object
+          description: Question-level statistics
+          properties:
+            total_responses:
+              type: integer
+              description: Total response count
+              format: int32
+              example: 37
+              readOnly: true
+            sum:
+              type: integer
+              description: Sum of all option response counts x numeric reporting values
+              format: int32
+              example: 10
+              readOnly: true
+            average:
+              type: number
+              description: Average response counts x numeric reporting values
+              format: int32
+              example: 10
+              readOnly: true
+            min:
+              type: integer
+              description: Lowest numeric reporting values selected
+              format: int32
+              example: 1
+              readOnly: true
+            max:
+              type: integer
+              description: Highest numeric reporting values selected
+              format: int32
+              example: 5
+              readOnly: true
+            std_dev:
+              type: number
+              description: Standard deviation
+              format: int32
+              example: 1
+              readOnly: true
+            hidden:
+              type: integer
+              description: Total count did not answer (hidden or not)
+              format: int32
+              example: 1
+              readOnly: true
+            skipped:
+              type: integer
+              description: Total count who saw but did not answer
+              format: int32
+              example: 1
+              readOnly: true
+    surveylinks:
+      type: object
+      properties:
+        build_tab_app_link:
+          type: string
+          description: URL to Build tab within the application
+          example: "https://app.surveygizmo.com/login/v1?authenticate=3f09b2c6f99f7ebd4885bfb2499214858b7c1a73&account_user_id=183830&r=%2Fprojects%2Feditor%3Fid%3D4122238&signature=9c1d99"
+        share_tab_app_link:
+          type: string
+          description: URL to Share tab within the application
+          example: "https://app.surveygizmo.com/login/v1?authenticate=3f09b2c6f99f7ebd4885bfb2499214858b7c1a73&account_user_id=183830&r=%2Fprojects%2Feditor%3Fid%3D4122238&signature=9c1d99"
+        default_share_link:
+          type: string
+          description: Default survey share URL
+          example: "http://www.surveygizmo.com/s3/4122230/standardsurvey"
+tags:
+  - name: Surveys
+    description: "Get, create, update, and delete surveys"
+  - name: Survey Pages
+    description: "Get, create, update, and delete survey pages"
+  - name: Survey Questions
+    description: "Get, create, update, and delete survey questions"
+  - name: Survey Responses
+    description: "Get, create, update, and delete survey responses"
+  - name: Survey Response Aggregates
+    description: "Get survey response aggregates"
+  - name: Survey Links
+    description: "Get survey share links an application edit links"

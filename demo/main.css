@@ -1,0 +1,141 @@
+body {
+    margin: 0;
+    padding-top: 50px;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    -moz-tap-highlight-color: rgba(0,0,0,0);
+    -ms-tap-highlight-color: rgba(0,0,0,0);
+    -o-tap-highlight-color: rgba(0,0,0,0);
+    tap-highlight-color: rgba(0,0,0,0);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-smoothing: antialiased;
+    -webkit-osx-font-smoothing: grayscale;
+    -moz-osx-font-smoothing: grayscale;
+    osx-font-smoothing: grayscale;
+    -webkit-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    -webkit-text-shadow: 1px 1px 1px rgba(0,0,0,0.004);
+    -ms-text-shadow: 1px 1px 1px rgba(0,0,0,0.004);
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.004);
+    text-rendering: optimizeSpeed!important;
+    font-smooth: always;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    font-family: Monserrat, sans-serif;
+}
+
+nav input, nav button  {
+    font-size: 16px;
+    height: 28px;
+    box-sizing: border-box;
+    vertical-align: middle;
+    line-height: 1;
+    outline: none;
+}
+nav header {
+    font-family: Monserrat, sans-serif;
+    float: left;
+    margin-left: 20px;
+    font-size: 25px;
+    color: #00329F;
+    font-weight: bold;
+}
+
+nav input {
+    width: 50%;
+    box-sizing: border-box;
+    max-width: 500px;
+    padding: 0 10px;
+
+    color: #555;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
+
+nav input:focus {
+    border-color: #f5a417;
+    outline: 0;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+}
+
+nav button {
+    background-color: #fff;
+    color: #333;
+    padding: 2px 10px;
+
+    touch-action: manipulation;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border: 1px solid #ccc;
+}
+
+nav button:hover {
+    background-color: #e6e6e6;
+    border-color: #adadad;
+}
+nav button:active {
+    background-color: #d4d4d4;
+    border-color: #8c8c8c;
+}
+
+nav {
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    background-color: white;
+    border-bottom: 1px solid #ccc;
+    position: fixed;
+    top: 0;
+    z-index: 1;
+    box-sizing: border-box;
+}
+
+nav iframe {
+  margin: 10px 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.navbar-brand .nav-logo {
+    background-repeat: no-repeat;
+    height: 50px;
+    width: 50px;
+    display: block;
+    background-image: url("data:image/svg+xml;charset=utf8,<svg xmlns=’http://www.w3.org/2000/svg' width=‘50’ height=‘50’ viewBox=‘0 0 50 50’ style=‘background:rgb(245, 164, 23)’><path fill=‘rgb(255, 255, 255)’ d=‘M17.384 21.774l-1.008-.253c-1.84-.516-2.712-.984-2.712-2.047 0-1.11.833-1.665 2.538-1.665 1.483 0 2.792.507 3.958 1.53.84-.975 1.245-1.983 1.245-3.037v-.452c-1.642-.73-3.276-1.119-5.116-1.119-4.188 0-6.496 1.817-6.496 4.823 0 2.776 1.301 4.568 3.91 5.338l.35.087c3.021.722 4.465 1.618 4.465 3.109 0 1.412-1.182 2.348-3.062 2.348-1.832 0-2.84-.722-3.688-2.388-1.38.722-2.292 1.793-2.768 3.125 1.205 1.5 3.212 2.34 6.059 2.34 4.806 0 7.329-2.03 7.329-5.552 0-3.196-1.793-5.25-5.005-6.186’/><path fill=‘rgb(255, 255, 255)’ d=‘M40.448 14.412c-.661-.241-1.4-.412-2.178-.412-1.571 0-2.715.615-3.64 1.952-1.213-.614-2.575-.886-3.881-.886-4.2 0-6.892 2.403-6.892 6.355 0 3.126 1.734 5.149 4.877 5.553-.141.576-.211 1.066-.211 1.424 0 .444.07.848.17 1.276-3.585.545-5.42 2.357-5.42 5.484 0 3.275 2.83 5.196 7.855 5.196 5.71 0 8.735-2.038 8.735-5.413 0-3.29-2.69-5.15-8.066-5.383-.171-.358-.257-.754-.257-1.252 0-.358.125-.754.257-1.252 3.866-.241 5.966-2.505 5.966-5.71 0-1.368-.296-2.504-1.034-3.57.738-.645 1.54-.754 2.59-.754.272 0 .622.038 1.089.07.194-.553.31-1.066.31-1.478 0-.342-.078-.755-.272-1.198zm-6.479 6.97c0 1.78-1.408 2.808-3.524 2.808-1.781 0-2.792-1.105-2.792-2.847 0-2.093 1.042-3.267 2.964-3.267 1.991 0 3.353 1.252 3.353 3.306zm1.952 13.557c0 1.734-1.47 2.396-4.892 2.396-2.567 0-3.89-.848-3.89-2.396 0-1.665 1.081-2.365 3.306-2.365 3.75 0 5.476.74 5.476 2.365z’/></svg>");
+}
+
+header a {
+  color: inherit;
+  text-decoration: none;
+}
+@media (min-width: 1000px) {
+    nav header {
+        position: absolute;
+    }
+}
+
+@media (max-width: 500px) {
+    nav input {
+        width: 70%;
+    }
+    nav header {
+        display: none;
+    }
+
+    nav iframe {
+      display: none;
+    }
+}
